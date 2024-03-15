@@ -21,6 +21,7 @@ contract PuppyRaffle is ERC721, Ownable {
     uint256 public immutable entranceFee;
 
     address[] public players;
+    //@audit need to check duration
     uint256 public raffleDuration;
     uint256 public raffleStartTime;
     address public previousWinner;
@@ -128,19 +129,41 @@ contract PuppyRaffle is ERC721, Ownable {
     /// @dev we reset the active players array after the winner is selected
     /// @dev we send 80% of the funds to the winner, the other 20% goes to the feeAddress
     function selectWinner() external {
+        //does this follow CEI? checks effect interaction
+        //q check duration
+        //q time should be set correctly?
+
         require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
         require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
+        //@audit randomness
+        //fixes Chainlink VRF, commit Reveal Scheme
         uint256 winnerIndex =
             uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
         address winner = players[winnerIndex];
+
+        //q why not just do address(this).balance 
         uint256 totalAmountCollected = players.length * entranceFee;
+        //q is the 80% correct?
+        //q there is something wrong in arthmetic issue here.....
         uint256 prizePool = (totalAmountCollected * 80) / 100;
         uint256 fee = (totalAmountCollected * 20) / 100;
+        //e this is the total fees the owner should be able to collect a
+        //@audit overflow classic error due to new version dont allow it
+        //bigger int should be used
+        //bigger then 18.446744073......... eth will wrap this function from start
+        //@audit unsafe castings uint256 to uint64 they will tons of damage to ethe amount 
         totalFees = totalFees + uint64(fee);
 
+
+        //e when we mint a new puppy NFT, we use the totalSupply as the tokenId
+        //q where do we increment the tokendId/totalSupply
         uint256 tokenId = totalSupply();
 
         // We use a different RNG calculate from the winnerIndex to determine rarity
+        //@audit weak randomness issue
+
+        //q if our transaction picks a winner and we don't like it... revert?
+        //gas war.... // @followup
         uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
         if (rarity <= COMMON_RARITY) {
             tokenIdToRarity[tokenId] = COMMON_RARITY;
@@ -150,9 +173,13 @@ contract PuppyRaffle is ERC721, Ownable {
             tokenIdToRarity[tokenId] = LEGENDARY_RARITY;
         }
 
-        delete players;
+        delete players; //e reseting players aray 
         raffleStartTime = block.timestamp;
-        previousWinner = winner;
+        previousWinner = winner;//e vanity (uselessness) doesn't matter much
+
+        //q can we reenter some where?
+        //q what if winner is a smart contract with a fallback that will fail?
+        //@audit the winner wouldn't get the money if their fallback is messed up!
         (bool success,) = winner.call{value: prizePool}("");
         require(success, "PuppyRaffle: Failed to send prize pool to winner");
         _safeMint(winner, tokenId);
@@ -160,9 +187,13 @@ contract PuppyRaffle is ERC721, Ownable {
 
     /// @notice this function will withdraw the fees to the feeAddress
     function withdrawFees() external {
+        //q .....?
+        //q if protocol has players someone can't withdraw fees?
+        //@audit difficult to withdraw fees 
         require(address(this).balance == uint256(totalFees), "PuppyRaffle: There are currently players active!");
         uint256 feesToWithdraw = totalFees;
         totalFees = 0;
+        //q what if winner is a smart contract with a fallback that will fail?
         (bool success,) = feeAddress.call{value: feesToWithdraw}("");
         require(success, "PuppyRaffle: Failed to withdraw fees");
     }
