@@ -190,6 +190,8 @@ contract PuppyRaffle is ERC721, Ownable {
         //q .....?
         //q if protocol has players someone can't withdraw fees?
         //@audit difficult to withdraw fees 
+        //mishandling of eth can block the function using the function of selfDestruct which will force send eth to it and then stop this check
+        //need to write self destruct proof of code...
         require(address(this).balance == uint256(totalFees), "PuppyRaffle: There are currently players active!");
         uint256 feesToWithdraw = totalFees;
         totalFees = 0;

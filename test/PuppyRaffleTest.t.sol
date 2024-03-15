@@ -313,6 +313,17 @@ contract PuppyRaffleTest is Test {
         vm.expectRevert("PuppyRaffle: There are currently players active!");
         puppyRaffle.withdrawFees();
     }
+
+    //mishanlding of eth
+    function testCantSendMoneyToRaffle()public{
+        address senderAddr=makeAddr("Sender");
+        vm.deal(senderAddr, 1);
+
+        vm.expectRevert();
+        vm.prank(senderAddr);
+        (bool success,)=payable(address(puppyRaffle)).call{value:1 ether}("");
+        require(success);
+    }
 }
 
 
