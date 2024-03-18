@@ -104,16 +104,16 @@ contract PuppyRaffleTest is Test {
         assertEq(puppyRaffle.players(0), address(0));
     }
 
-    function testOnlyPlayerCanRefundThemself() public playerEntered {
+    function test_OnlyPlayerCanRefundThemself() public playerEntered {
         uint256 indexOfPlayer = puppyRaffle.getActivePlayerIndex(playerOne);
         vm.expectRevert("PuppyRaffle: Only the player can refund");
         vm.prank(playerTwo);
         puppyRaffle.refund(indexOfPlayer);
     }
 
-    //////////////////////
-    /// getActivePlayerIndex         ///
-    /////////////////////
+       //////////////////////
+    /// getActivePlayerIndex///
+      /////////////////////
     function testGetActivePlayerIndexManyPlayers() public {
         address[] memory players = new address[](2);
         players[0] = playerOne;
@@ -125,7 +125,7 @@ contract PuppyRaffleTest is Test {
     }
 
     //////////////////////
-    /// selectWinner         ///
+    /// selectWinner ///
     /////////////////////
     modifier playersEntered() {
         address[] memory players = new address[](4);
@@ -196,7 +196,7 @@ contract PuppyRaffleTest is Test {
     }
 
     //////////////////////
-    /// withdrawFees         ///
+    /// withdrawFees  ///
     /////////////////////
     function testCantWithdrawFeesIfPlayersActive() public playersEntered {
         vm.expectRevert("PuppyRaffle: There are currently players active!");
