@@ -20,7 +20,6 @@ To address this issue, it is recommended to set `PuppyRaffle::totalFees` to a `u
 
 ### Mitigation Implementation:
 
-```javascript
 function selectWinner() external {
     require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
     require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
