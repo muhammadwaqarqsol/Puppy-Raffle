@@ -34,4 +34,4 @@ function selectWinner() external {
     totalFees = totalFees + fee;
 }
 ```
-y implementing these changes, the PuppyRaffle contract can ensure accurate fee tracking and prevent potential loss of funds due to data truncation during type casting.
+By implementing these changes, the PuppyRaffle contract can ensure accurate fee tracking and prevent potential loss of funds due to data truncation during type casting.
