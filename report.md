@@ -59,7 +59,7 @@ Contracts have owners with privileged rights to perform admin tasks and need to 
 	contract PuppyRaffle is ERC721, Ownable {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 167](src\PuppyRaffle.sol#L167)
+- Found in src/PuppyRaffle.sol [Line: 205](src\PuppyRaffle.sol#L205)
 
 	```solidity
 	    function changeFeeAddress(address newFeeAddress) external onlyOwner {
@@ -74,13 +74,13 @@ Contracts have owners with privileged rights to perform admin tasks and need to 
 Use `abi.encode()` instead which will pad items to 32 bytes, which will [prevent hash collisions](https://docs.soliditylang.org/en/v0.8.13/abi-spec.html#non-standard-packed-mode) (e.g. `abi.encodePacked(0x123,0x456)` => `0x123456` => `abi.encodePacked(0x1,0x23456)`, but `abi.encode(0x123,0x456)` => `0x0...1230...456`). Unless there is a compelling reason, `abi.encode` should be preferred. If there is only one argument to `abi.encodePacked()` it can often be cast to `bytes()` or `bytes32()` [instead](https://ethereum.stackexchange.com/questions/30912/how-to-compare-strings-in-solidity#answer-82739).
 If all arguments are strings and or bytes, `bytes.concat()` should be used instead.
 
-- Found in src/PuppyRaffle.sol [Line: 197](src\PuppyRaffle.sol#L197)
+- Found in src/PuppyRaffle.sol [Line: 235](src\PuppyRaffle.sol#L235)
 
 	```solidity
 	            abi.encodePacked(
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 201](src\PuppyRaffle.sol#L201)
+- Found in src/PuppyRaffle.sol [Line: 239](src\PuppyRaffle.sol#L239)
 
 	```solidity
 	                        abi.encodePacked(
@@ -91,6 +91,12 @@ If all arguments are strings and or bytes, `bytes.concat()` should be used inste
 ## L-2: Solidity pragma should be specific, not wide
 
 Consider using a specific version of Solidity in your contracts instead of a wide version. For example, instead of `pragma solidity ^0.8.0;`, use `pragma solidity 0.8.0;`
+
+- Found in script/DeployPuppyRaffle.sol [Line: 2](script\DeployPuppyRaffle.sol#L2)
+
+	```solidity
+	pragma solidity ^0.7.6;
+	```
 
 - Found in src/PuppyRaffle.sol [Line: 2](src\PuppyRaffle.sol#L2)
 
@@ -106,19 +112,19 @@ Consider using a specific version of Solidity in your contracts instead of a wid
 
 Assigning values to address state variables without checking for `address(0)`.
 
-- Found in src/PuppyRaffle.sol [Line: 62](src\PuppyRaffle.sol#L62)
+- Found in src/PuppyRaffle.sol [Line: 63](src\PuppyRaffle.sol#L63)
 
 	```solidity
 	        feeAddress = _feeAddress;
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 150](src\PuppyRaffle.sol#L150)
+- Found in src/PuppyRaffle.sol [Line: 178](src\PuppyRaffle.sol#L178)
 
 	```solidity
-	        previousWinner = winner;
+	        previousWinner = winner;//e vanity (uselessness) doesn't matter much
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 168](src\PuppyRaffle.sol#L168)
+- Found in src/PuppyRaffle.sol [Line: 206](src\PuppyRaffle.sol#L206)
 
 	```solidity
 	        feeAddress = newFeeAddress;
@@ -136,19 +142,19 @@ Assigning values to address state variables without checking for `address(0)`.
 	    function run() public {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 79](src\PuppyRaffle.sol#L79)
+- Found in src/PuppyRaffle.sol [Line: 80](src\PuppyRaffle.sol#L80)
 
 	```solidity
 	    function enterRaffle(address[] memory newPlayers) public payable {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 96](src\PuppyRaffle.sol#L96)
+- Found in src/PuppyRaffle.sol [Line: 99](src\PuppyRaffle.sol#L99)
 
 	```solidity
 	    function refund(uint256 playerIndex) public {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 189](src\PuppyRaffle.sol#L189)
+- Found in src/PuppyRaffle.sol [Line: 227](src\PuppyRaffle.sol#L227)
 
 	```solidity
 	    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -166,37 +172,37 @@ Assigning values to address state variables without checking for `address(0)`.
 	            1e18,
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 86](src\PuppyRaffle.sol#L86)
+- Found in src/PuppyRaffle.sol [Line: 89](src\PuppyRaffle.sol#L89)
 
 	```solidity
 	        for (uint256 i = 0; i < players.length - 1; i++) {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 87](src\PuppyRaffle.sol#L87)
+- Found in src/PuppyRaffle.sol [Line: 90](src\PuppyRaffle.sol#L90)
 
 	```solidity
 	            for (uint256 j = i + 1; j < players.length; j++) {
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 127](src\PuppyRaffle.sol#L127)
+- Found in src/PuppyRaffle.sol [Line: 137](src\PuppyRaffle.sol#L137)
 
 	```solidity
 	        require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 132](src\PuppyRaffle.sol#L132)
+- Found in src/PuppyRaffle.sol [Line: 148](src\PuppyRaffle.sol#L148)
 
 	```solidity
 	        uint256 prizePool = (totalAmountCollected * 80) / 100;
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 133](src\PuppyRaffle.sol#L133)
+- Found in src/PuppyRaffle.sol [Line: 149](src\PuppyRaffle.sol#L149)
 
 	```solidity
 	        uint256 fee = (totalAmountCollected * 20) / 100;
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 139](src\PuppyRaffle.sol#L139)
+- Found in src/PuppyRaffle.sol [Line: 167](src\PuppyRaffle.sol#L167)
 
 	```solidity
 	        uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
@@ -208,19 +214,19 @@ Assigning values to address state variables without checking for `address(0)`.
 
 Index event fields make the field more quickly accessible to off-chain tools that parse events. However, note that each index field costs extra gas during emission, so it's not necessarily best to index the maximum allowed per event (three fields). Each event should use three indexed fields if there are three or more fields, and gas usage is not particularly of concern for the events in question. If there are fewer than three fields, all of the fields should be indexed.
 
-- Found in src/PuppyRaffle.sol [Line: 53](src\PuppyRaffle.sol#L53)
+- Found in src/PuppyRaffle.sol [Line: 54](src\PuppyRaffle.sol#L54)
 
 	```solidity
 	    event RaffleEnter(address[] newPlayers);
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 54](src\PuppyRaffle.sol#L54)
+- Found in src/PuppyRaffle.sol [Line: 55](src\PuppyRaffle.sol#L55)
 
 	```solidity
 	    event RaffleRefunded(address player);
 	```
 
-- Found in src/PuppyRaffle.sol [Line: 55](src\PuppyRaffle.sol#L55)
+- Found in src/PuppyRaffle.sol [Line: 56](src\PuppyRaffle.sol#L56)
 
 	```solidity
 	    event FeeAddressChanged(address newFeeAddress);
