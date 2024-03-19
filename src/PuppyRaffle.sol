@@ -119,7 +119,7 @@ contract PuppyRaffle is ERC721, Ownable {
         }
         //what if player is at index 0
         //@audit if the player is at index zero it will return zero, and player may think they are not active
-        return 0;
+        return 0; //can return -1
     }
 
     /// @notice this function will select a winner and mint a puppy
