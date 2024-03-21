@@ -10,9 +10,10 @@ Examples:
 - `PuppyRaffle::totalFees` within the `withdrawFees` function
 
 -  _getActivePlayerIndex was dead code and never actually used. This could be Gas or Informational.
-````
-I-7 isActivePlayer is never used and should be removed
-Description: The function PuppyRaffle::isActivePlayer is never used and should be removed.
+
+### I-7 isActivePlayer is never used and should be removed
+- Description: The function PuppyRaffle::isActivePlayer is never used and should be removed.
+  
 ```diff
 -    function _isActivePlayer() internal view returns (bool) {
 -        for (uint256 i = 0; i < players.length; i++) {
@@ -23,4 +24,4 @@ Description: The function PuppyRaffle::isActivePlayer is never used and should b
 -        return false;
 -    }
 ```
-````
+
