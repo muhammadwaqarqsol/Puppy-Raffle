@@ -2,7 +2,10 @@
 
 ### Background:
 The `PuppyRaffle` contract implements a raffle system where participants pay an entrance fee in Ether to enter the raffle and have a chance to win a prize. To ensure fairness, the contract checks the current balance against the total fees collected before allowing fee withdrawals.
-
+```solidity
+require(address(this).balance ==
+  uint256(totalFees), "PuppyRaffle: There are currently players active!");
+```
 ### Vulnerability:
 The contract assumes that since there's no explicit receive or fallback function, it should not be able to receive Ether other than through the intended entrance fee mechanism. However, the contract's handling of Ether is not explicitly restricted, which could potentially lead to unexpected behaviors or vulnerabilities.
 
